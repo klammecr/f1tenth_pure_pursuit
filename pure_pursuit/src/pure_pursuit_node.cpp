@@ -22,16 +22,20 @@ class PurePursuit : public rclcpp::Node
     // This is just a template, you are free to implement your own node!
 
 private:
+    float m_L;
 
 public:
     PurePursuit() : Node("pure_pursuit_node")
     {
         // TODO: create ROS subscribers and publishers
+
+        m_L = 5.0;
     }
 
     void pose_callback(const geometry_msgs::msg::PoseStamped::ConstPtr &pose_msg)
     {
         // TODO: find the current waypoint to track using methods mentioned in lecture
+        
 
         // TODO: transform goal point to vehicle frame of reference
 
