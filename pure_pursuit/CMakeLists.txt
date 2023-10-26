@@ -23,29 +23,47 @@ foreach(PACKAGE
   std_msgs
   visualization_msgs
   Eigen3
-  tf2_ros)
+  tf2_ros
+  tf2_geometry_msgs
+  )
 
   find_package(${PACKAGE} REQUIRED)
 
 endforeach()
 
+# find_package(orocos_kdl REQUIRED)
+# find_library(OROCOS_KDL orocos-kdl)
+# set(orocos_kdl_LIBRARIES ${OROCOS_KDL})
+
 # Include Cpp "include" directory
 include_directories(include)
 include_directories(
   ${EIGEN3_INCLUDE_DIRS}
+  ${orcos_kdl_INCLUDE_DIRS}
 )
 
 # Create Cpp executable
 add_executable(pure_pursuit_node src/pure_pursuit_node.cpp)
 
 ament_target_dependencies(pure_pursuit_node 
-  rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs visualization_msgs tf2_ros
+  rclcpp geometry_msgs ackermann_msgs nav_msgs sensor_msgs std_msgs visualization_msgs tf2_ros tf2_geometry_msgs
 )
 
 # Install Cpp executables
 install(TARGETS
   pure_pursuit_node
   DESTINATION lib/${PROJECT_NAME})
+
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+# Install config files.
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})

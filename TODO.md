@@ -1,0 +1,3 @@
+- [x] Publish the waypoints as a topic or parameter
+- [ ] Follow steps to run the particle filter
+- [ ] Implement pure pursuit
