@@ -60,11 +60,26 @@ if __name__ == "__main__":
     else:
         annot = np.loadtxt(args.annotations).astype("int")
         filt_annot = np.array([a for a in annot.T if np.all(map[a[1], a[0]] > 205)])
-        for x,y in filt_annot:
+
+
+        dist_last_waypt = 0
+        thresh = 15
+        annot = annot.T
+        waypts = [annot[0]]
+        for i in range(1, annot.shape[0], 1):
+            dist_last_waypt += np.linalg.norm(annot[i] - annot[i-1])
+            if dist_last_waypt >= thresh:
+                waypts.append(annot[i])
+                dist_last_waypt = 0
+
+        print(waypts)
+        waypts = np.array(waypts)
+        for x,y in waypts:
             cv2.circle(map, (x,y), radius=3, color=(255,0,0))
         cv2.imshow("Filtered Waypoints", map)
         cv2.waitKey()
-        np.savetxt(f"{args.out_path}/final_waypoints.txt", filt_annot)
+        waypts = np.hstack((waypts, np.zeros((waypts.shape[0], 1))))
+        np.savetxt(f"{args.out_path}/final_waypoints.txt", waypts)
 
     # Post process
 
